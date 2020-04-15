@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="gb2312">
+    <title>实物资产管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/css/layui.css">
+
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+
+<body>
+<script src="../layui/layui.js"></script>
+<script src="../layui/res/js/cookie.js"></script>
+
+<h1>系统日志</h1>
+<hr class="layui-bg-red">
+
+<table class="layui-hide" id="LAY_table_user" lay-filter="test"></table>
+
+<div style="margin-bottom: 5px;">
+    <ins class="adsbygoogle" style="display:inline-block;width:700px;height:485px" data-ad-client="ca-pub-6111334333458862" data-ad-slot="3820120620"></ins>
+</div>
+
+<script>
+	//JavaScript代码区域
+	//config的设置是全局的
+	layui.config({
+	  base: '../layui/res/js/' //假设这是cookie.js所在的目录（本页面的相对路径）
+	}).extend({ //设定模块别名
+	  //cookie: 'cookie'   如果cookie.js是在根目录，也可以不用设定别名,因为我cookie.js的是在根目录，所以这句话其实也不用写也行。
+	});
+
+    layui.use(['jquery','cookie','table','layer','form'], function(){
+        var $= layui.jquery
+		,cookie= layui.cookie
+		,form=layui.form
+		,layer=layui.layer
+		,table = layui.table;
+
+		var myid=$.cookie('username');
+		var key=$.cookie('key');
+		
+		$(document).ready(function(){
+			parent.document.getElementById("option").height=0;
+			parent.document.getElementById("option").height=document.body.scrollHeight;
+		});
+		
+		table.render({
+            elem: '#LAY_table_user'
+            ,url: '/shiwuzichan/YW_chaxun/yw_log/?action=log&id=' + myid + '&key=' + key
+            ,cols: [[
+                {field: 'number', title: 'ID', width:80, sort: true, fixed: 'left'}
+				,{field: 'user', title: '姓名', width:100, sort: true}
+				,{field: 'yw', title: '业务流程', width:160} 
+				,{field: 'action', title: '动作', width:100} 
+				,{field: 'datetime', title: '时间', width:150} 
+				,{field: 'ip_add', title: 'IP地址', width:100} 
+            ]]
+            ,id: 'testReload'
+            ,page: true
+            ,height: 475
+        });	
+    });
+</script>
+</body>
+</html>

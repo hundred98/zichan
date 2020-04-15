@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="gb2312">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>实物资产管理系统</title>
+  <link rel="stylesheet" href="./layui/css/layui.css">
+</head>
+<body>
+ 
+<!-- 你的HTML代码 -->
+
+<p align="center">&nbsp;</p>
+<p align="center">&nbsp;</p>
+<p align="center">&nbsp;</p>
+<p align="center">&nbsp;</p>
+<p align="center">&nbsp;</p>
+
+<div style="margin: 15px 0; text-align: center; background-color: #F2F2F2;">
+  <ins style="width:728px;height:120px"><font size="7" color="#009688"><strong>修改密码</strong></ins>
+</div>
+	  
+	  <p align="center">&nbsp;</p>
+<form name="lc" class="layui-form col-lg-5">
+  <div align="center">
+    <table border="0">
+      <tbody>
+        <tr>
+          <td><label class="layui-form-label" style="width:120px; font-size: 22px;">原密码：</label></td>
+          <td><input type="password" name="ypswd" id="ypswd" autocomplete="off" class="layui-input" style="width:200px;height:30px; font-size: 22px;"></td>
+        </tr>
+        <tr>
+          <td><label class="layui-form-label" style="width:120px; font-size: 22px;">新密码：</label></td>
+          <td><input type="password" name="xpswd" id="xpswd" autocomplete="off" class="layui-input" style="width:200px;height:30px; font-size: 22px;"></td>	
+        </tr>
+        <tr>
+          <td><label class="layui-form-label" style="width:120px; font-size: 22px;">确认密码：</label></td>
+          <td><input type="password" name="xpswda" id="xpswda" autocomplete="off" class="layui-input" style="width:200px;height:30px; font-size: 22px;"></td>	
+        </tr>
+      </tbody>
+  </table>
+  </div>
+</form> 
+
+<p align="center">&nbsp;</p>
+<div class="demoTable" align="center">
+	<button class="layui-btn layui-btn-lg layui-btn-radius layui-btn-normal" data-type="denglu" id="denglu" style="font-size: 25px;">提交</button>
+</div>	 
+
+<p align="center">&nbsp;</p>
+<p align="center">&nbsp;</p>
+<p align="center">&nbsp;</p>
+<p align="center">&nbsp;</p>
+     
+<script src="./layui/layui.js"></script>
+<script src="./layui/res/js/cookie.js"></script>
+<script src="./layui/res/js/md5.js"></script>
+
+<script>
+	//JavaScript代码区域
+	//config的设置是全局的
+	layui.config({
+	  base: './layui/res/js/' //假设这是cookie.js所在的目录（本页面的相对路径）
+	}).extend({ //设定模块别名
+	  //cookie: 'cookie'   如果cookie.js是在根目录，也可以不用设定别名,因为我cookie.js的是在根目录，所以这句话其实也不用写也行。
+	  //md5:'md5'
+	});
+	
+	//使用拓展模块
+	layui.use(['jquery','cookie','layer','form'], function(){
+		var $= layui.jquery
+		,cookie= layui.cookie
+		,form= layui.form
+		,layer = layui.layer;
+
+//	var juese;
+//	var key;
+
+	var myid=$.cookie('username');
+	var key=$.cookie('key');
+
+	var $ = layui.$, active = {
+		denglu: function(){
+//			console.log(my);
+			if(ypswd.value!='')
+			{
+				if(xpswd.value!='')
+				{
+					if(xpswda.value!='')
+					{
+						if(xpswd.value == xpswda.value)
+						{
+							var ypswdmd=hex_md5(ypswd.value);
+							var xpswdmd=hex_md5(xpswd.value);
+							$.ajax({
+								url: "/shiwuzichan/denglu",
+								type: "POST",
+								data:{"action":'ggmm',"id":myid,"pswd":ypswdmd,"xpswd":xpswdmd,"key":key},
+								dataType: "json",
+								success: function(data){
+			//						console.log(data);
+									if(data.code == 0)
+									{
+										$.cookie('key', null); 
+										layer.msg(data.msg);
+										setTimeout(function (){
+											window.open("/shiwuzichan/index.html");
+//											window.opener=null;
+											window.opener.closeThisWindow();
+											window.open('','_self');
+											window.close();											
+										}, 1500);
+									}
+									else
+									{
+										layer.msg(data.msg);
+									}
+								}
+							});	
+						}
+						else
+						{
+							layer.msg("两次输入的新密码不一致！", {icon: 5});
+						}
+					}
+					else
+					{
+						layer.msg("请输入“确认密码”！", {icon: 5});
+					}
+				}
+				else
+				{
+					layer.msg("请输入“新密码”！", {icon: 5});
+				}
+			}
+			else
+			{
+				layer.msg("请填写“原密码”！", {icon: 5});
+			}			
+		}
+	};
+
+	$(document).keydown(function(e){
+		if(e.keyCode === 13){
+			$("#denglu").trigger("click");
+		}
+	});
+
+	$('.demoTable .layui-btn').on('click', function(){
+		var type = $(this).data('type');
+		active[type] ? active[type].call(this) : '';
+	});
+	
+});
+
+	//用$.cookie();就可以直接使用了。
+</script>
+</body>
+</html>

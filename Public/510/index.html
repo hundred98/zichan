@@ -1,0 +1,291 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>实物资产管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">	
+    <link rel="stylesheet" href="../layui/css/layui.css">
+</head>
+
+<body>
+	<script src="../layui/layui.js"></script>
+	<script src="../layui/jquery-3.4.1.min.js"></script>
+	<script src="../layui/res/js/cookie.js"></script>
+	<script src="../echars/echarts-all.js"></script>
+	<script src="../echars/echarts.js"></script>
+
+<h1>资产统计</h1>
+<div class="demoTable layui-form">
+	<div class="layui-tab layui-tab-card" lay-filter="testTab">
+		<ul class="layui-tab-title">
+			<li class="layui-this">所有权</li>
+			<li>责任部门</li>
+			<li>资产名称</li>
+			<li>合同信息</li>
+			<li>资产状态</li>
+			<li>存放/使用地点</li>
+		</ul>
+		<div class="layui-tab-content" style="height: 600px;">
+			<div class="layui-form-item" id="fh_xx" style="display: none;">
+				<div class="layui-input-inline">
+					<select name="fenhang" id="fenhang" lay-filter="fenhang" style="width:180px;height:30px;">
+						<option value="">请选择分行</option>
+					</select>
+				</div>
+			</div>
+			<!--Step:1 Prepare a dom for ECharts which (must) has size (width & hight)-->
+			<!--Step:1 为ECharts准备一个具备大小（宽高）的Dom-->
+			<div id="mainMap" style="width: 600px;height:600px"></div>
+			<div id="mainMap_bar" style="width:1000px;height:600px" style="display: none;"></div>
+		</div>
+	</div>
+</div>
+    
+    <!--Step:2 Import echarts.js-->
+    <!--Step:2 引入echarts.js-->
+    
+    <script>
+	
+		var myid=$.cookie('username');
+		var key=$.cookie('key');
+		
+			var mydata=[{value:11, name:'访问量'}];
+//			var mydata=[];
+		var data = [];
+		
+		$(document).ready(function(){
+			parent.document.getElementById("option").height=0;
+			parent.document.getElementById("option").height=document.body.scrollHeight - 580;
+		});
+		
+		function refreshchart(title,sname,data)
+		{
+			var myChart = echarts.init(document.getElementById('mainMap'));
+			var option = {
+				title : {
+					text: title,
+					x:'center'
+				},
+				tooltip : {
+					trigger: 'item',
+					formatter: "{a} <br/>{b} : {c} ({d}%)"
+				},
+				series : [
+					{
+						name: sname,
+						type: 'pie',
+						radius : '55%',
+						center: ['50%', '50%'],
+						data:data,
+						itemStyle: {
+							emphasis: {
+								shadowBlur: 10,
+								shadowOffsetX: 0,
+								shadowColor: 'rgba(0, 0, 0, 0.5)'
+							}
+						}
+					}
+				]		
+			};
+//			console.log(option);
+			myChart.setOption(option);
+		};
+		
+		function refreshchart_bar(title,xdata,ydata,yname)
+		{
+			var myChart = echarts.init(document.getElementById('mainMap_bar'));
+			var option = {
+				title: {
+					text: title,
+					x:'center'
+				},
+				tooltip: {},
+				xAxis: {
+					data: xdata,
+					axisLabel: {
+						interval: 0,
+						rotate:30,
+						formatter: function(value) {
+							if (value.length > 6) {
+						    	return value.substring(0, 6) + "...";
+						    }
+							else{
+						      return value;
+						   	}
+						}						
+//						formatter:function(value)
+//						{
+//							return value.split("").join("\n");
+//						}
+					}
+				},
+				yAxis: {},
+				series: [{
+					name: yname,
+					type: 'bar',
+					data: ydata
+				}]
+			};
+//			console.log(option);
+			myChart.setOption(option);
+		};		
+		
+		function getMapData(tab){
+			var actor;
+			var title;
+			var sname;
+			var xdata = [];
+			var ydata = [];
+			if(tab == 1)
+			{
+				$("#mainMap").show();
+				$("#mainMap_bar").hide();
+				title='按责任部门';
+				sname='部门';
+				data = [];
+				refreshchart(title,sname,data);
+			}
+			else if(tab>=4)
+			{
+				$("#mainMap").hide();
+				$("#mainMap_bar").show();
+				if(tab==4)
+				{
+					title = '按资产状态';
+					actor = "status";
+					sname = "状态";
+				}
+				else if(tab==5)
+				{
+					title = '按存放/使用地点';
+					actor = "didian";
+					sname = "地点";
+				}
+				$.ajax({
+					type : "GET",
+					url : "/shiwuzichan/YW_chaxun/yw_tongji/",
+					data:{"action":actor,"id":myid,"key":key},
+					dataType: "json",
+					success: function(res)
+					{	
+						for(var i=0;i<res.count;i++)
+						{
+							xdata.push(res.data[i].name);
+							ydata.push(res.data[i].value);
+						}
+						refreshchart_bar(title,xdata,ydata,sname);
+					}
+				});	
+			}
+			else
+			{
+				$("#mainMap").show();
+				$("#mainMap_bar").hide();
+				if(tab==0)
+				{
+					actor="fenhang";
+					title='按所属分行';
+					sname='分行';
+				}
+				else if(tab==2)
+				{
+					actor="base";
+					title='按资产名称';
+					sname='名称';
+				}
+				else if(tab==3)
+				{
+					actor="hetong";
+					title='按合同信息';
+					sname='合同信息';
+				}
+				$.ajax({
+					type : "GET",
+					url : "/shiwuzichan/YW_chaxun/yw_tongji/",
+					data:{"action":actor,"id":myid,"key":key},
+					dataType: "json",
+					success: function(res)
+					{	
+						refreshchart(title,sname,res.data);
+					}
+				});	
+			}
+		};
+				
+		//JavaScript代码区域
+		//config的设置是全局的
+		layui.config({
+		  base: '../layui/res/js/' //假设这是cookie.js所在的目录（本页面的相对路径）
+		}).extend({ //设定模块别名
+		  //cookie: 'cookie'   如果cookie.js是在根目录，也可以不用设定别名,因为我cookie.js的是在根目录，所以这句话其实也不用写也行。
+		});
+		
+		layui.use(['jquery','cookie','layer','element','form'], function(){
+			var $= layui.jquery
+			,cookie= layui.cookie
+			,element= layui.element
+			,form=layui.form
+			,layer= layui.layer;
+				
+			$(document).ready(function(){
+				getMapData(0);
+			});			
+				
+			form.on('select(fenhang)', function(data)
+			{
+				var title;
+				var sname;
+				title='按责任部门';
+				sname='部门';
+				$.ajax({
+					type : "GET",
+					url : "/shiwuzichan/YW_chaxun/yw_tongji/",
+					data:{"action":"bumen","fenhang":fenhang.value,"id":myid,"key":key},
+					dataType: "json",
+					success: function(res)
+					{
+						refreshchart(title,sname,res.data);
+					}
+				});				
+			});	
+	
+			//监听Tab切换，以改变地址hash值
+			element.on('tab(testTab)', function(data){
+				if(data.index == 1)
+				{
+					$("#fh_xx").show();
+					$("select[name='fenhang']").html('<option value="">请选择分行</option>'); //清空
+					$.ajax({
+						type : "GET",
+						url : "/shiwuzichan/YW_chaxun/yw_tongyong/",
+						data:{"action":"fenhang","id":myid,"key":key},
+						dataType: "json",
+						success: function(res)
+						{
+							for(var i=0; i<res.data.length; i++){
+							$("select[name='fenhang']").append("<option value='"+res.data[i].id+"'>"+res.data[i].name+"</option>");
+							}
+							form.render();
+						}
+					});
+					getMapData(1);
+				}
+				else
+				{
+					$("#fh_xx").hide();
+					getMapData(data.index)
+//					console.log(data.index);
+				}
+			});
+
+			$('.demoTable .layui-btn').on('click', function(){
+				var type = $(this).data('type');
+				active[type] ? active[type].call(this) : '';
+			});
+		});
+	</script>	
+	
+</body>
+</html>

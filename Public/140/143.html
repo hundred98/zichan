@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="gb2312">
+    <title>实物资产管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/css/layui.css">
+
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+
+<body>
+<script src="../layui/layui.js"></script>
+<script src="../layui/res/js/cookie.js"></script>
+
+<h1>合同信息管理</h1>
+<!--form name="lc" class="layui-form col-lg-5" action="/shiwuzichan/YW_guanli/zc_ly/" method="post"> -->
+<div class="demoTable layui-form">
+	<input type="hidden" name="ht_num" id="ht_num">
+	
+	<table class="layui-table" lay-size="sm" style="table-layout:fixed">
+		<colgroup>
+			<col width="40">
+			<col width="100">
+			<col width="10">
+			<col width="40">
+			<col width="100">
+		</colgroup>
+		<tbody>
+			<tr>
+				<td><label class="layui-form-label">合同名称:</label></td>
+				<td><input class="layui-input" name="names" id="names" style="width:180px;height:30px;"></td>
+				<td> </td>
+				<td><label class="layui-form-label">合同名称:</label></td>
+				<td><input class="layui-input" name="names_a" id="names_a" style="width:180px;height:30px;"></td>
+			</tr>
+			
+			<tr>
+				<td><label class="layui-form-label">合同编号:</label></td>
+				<td><input class="layui-input" name="bianhao" id="bianhao" style="width:180px;height:30px;"></td>
+				<td> </td>
+				<td><label class="layui-form-label">合同编号:</label></td>
+				<td><input class="layui-input" name="bianhao_a" id="bianhao_a" style="width:180px;height:30px;"></td>
+			</tr>
+
+			<tr>
+				<td><label class="layui-form-label">购买资产:</label></td>
+				<td>
+					<div class="layui-input-inline">
+						<select name="gmzc" id="gmzc" lay-filter="gmzc">
+							<option value="">请选择购买资产</option>
+						</select>
+					</div>
+				</td>
+				<td> </td>
+				<td><label class="layui-form-label">购买资产:</label></td>
+				<td>
+					<div class="layui-input-inline">
+						<select name="gmzc_a" id="gmzc_a" lay-filter="gmzc_a">
+							<option value="">请选择购买资产</option>
+						</select>
+					</div>
+				</td>				
+			</tr>
+			<tr>
+				<td><label class="layui-form-label">供应商:</label></td>
+				<td>
+					<div class="layui-input-inline">
+						<select name="gysh" id="gysh">
+							<option value="">请选择供应商</option>
+						</select>
+					</div>
+				</td>
+				<td> </td>
+				<td><label class="layui-form-label">供应商:</label></td>
+				<td>
+					<div class="layui-input-inline">
+						<select name="gysh_a" id="gysh_a">
+							<option value="">请选择供应商</option>
+						</select>
+					</div>
+				</td>
+			</tr>
+
+			<tr>
+				<td><label class="layui-form-label">购买数量:</label></td>
+				<td><input class="layui-input" name="shuliang" id="shuliang" style="width:180px;height:30px;"></td>
+				<td> </td>
+				<td><label class="layui-form-label">购买数量:</label></td>
+				<td><input class="layui-input" name="shuliang_a" id="shuliang_a" style="width:180px;height:30px;"></td>
+			</tr>
+
+			<tr>
+				<td><label class="layui-form-label">购买日期:</label></td>
+				<td><input type="text" class="layui-input" name="gmriqi" id="gmriqi" placeholder="yyyy-MM-dd" style="width:180px;height:30px;"></td>
+				<td> </td>
+				<td><label class="layui-form-label">购买日期:</label></td>
+				<td><input type="text" class="layui-input" name="gmriqi_a" id="gmriqi_a" placeholder="yyyy-MM-dd" style="width:180px;height:30px;"></td>
+			</tr>
+
+			<tr>
+				<td><label class="layui-form-label">发票编号:</label></td>
+				<td><input class="layui-input" name="fpbh" id="fpbh" style="width:180px;height:30px;"></td>
+				<td> </td>
+				<td><label class="layui-form-label">发票编号:</label></td>
+				<td><input class="layui-input" name="fpbh_a" id="fpbh_a" style="width:180px;height:30px;"></td>
+			</tr>
+			<tr>
+				<td><label class="layui-form-label">保修年限:</label></td>
+				<td><input class="layui-input" name="bxnx" id="bxnx" style="width:180px;height:30px;"></td>
+				<td> </td>
+				<td><label class="layui-form-label">保修年限:</label></td>
+				<td><input class="layui-input" name="bxnx_a" id="bxnx_a" style="width:180px;height:30px;"></td>
+			</tr>			<tr>
+				<td><label class="layui-form-label">购买总价:</label></td>
+				<td><input class="layui-input" name="gmjg" id="gmjg" style="width:180px;height:30px;"></td>
+				<td> </td>
+				<td><label class="layui-form-label">购买总价:</label></td>
+				<td><input class="layui-input" name="gmjg_a" id="gmjg_a" style="width:180px;height:30px;"></td>
+			</tr>
+			<tr>
+				<td><label class="layui-form-label">备注:</label></td>
+				<td><input class="layui-input" name="beizhu" id="beizhu" style="width:180px;height:30px;"></td>
+				<td> </td>
+				<td><label class="layui-form-label">备注:</label></td>
+				<td><input class="layui-input" name="beizhu_a" id="beizhu_a" style="width:180px;height:30px;"></td>
+			</tr>
+
+			<tr>
+				<td></td>
+				<td><button  class="layui-btn layui-col-md-offset1" data-type="add"> 添加</button></td>
+				<td> </td>
+				<td></td>
+				<td><button  class="layui-btn layui-col-md-offset1" data-type="gai"> 修改</button></td>
+			</tr>			
+		</tbody>
+	</table>
+</div>
+
+<table class="layui-hide" id="LAY_table_user" lay-filter="test"></table>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn-sm layui-btn-danger" lay-event="del">删除</a>
+</script>
+
+
+<div style="margin-bottom: 5px;">
+    <ins class="adsbygoogle" style="display:inline-block;width:700px;height:485px" data-ad-client="ca-pub-6111334333458862" data-ad-slot="3820120620"></ins>
+</div>
+
+<script>
+	//JavaScript代码区域
+	//config的设置是全局的
+	layui.config({
+	  base: '../layui/res/js/' //假设这是cookie.js所在的目录（本页面的相对路径）
+	}).extend({ //设定模块别名
+	  //cookie: 'cookie'   如果cookie.js是在根目录，也可以不用设定别名,因为我cookie.js的是在根目录，所以这句话其实也不用写也行。
+	});
+
+    layui.use(['jquery','laydate','cookie','table','layer','form'], function(){
+        var $= layui.jquery
+		,cookie= layui.cookie
+		,form=layui.form
+		,layer=layui.layer
+		,laydate = layui.laydate
+		,table = layui.table;
+		
+		var myid=$.cookie('username');
+		var key=$.cookie('key');
+		
+		laydate.render({
+			elem: '#gmriqi' //指定元素
+		});
+		laydate.render({
+			elem: '#gmriqi_a' //指定元素
+		});		
+		
+		$(document).ready(function(){
+            $.ajax({
+                type : "GET",
+                url : "/shiwuzichan/YW_chaxun/yw_tongyong/",
+                data:{"action":"zc_base","id":myid,"key":key},
+				dataType: "json",
+                success: function(res)
+                {
+					for(var i=0; i<res.data.length; i++){
+					$("select[name='gmzc']").append("<option value='"+res.data[i].id+"'>"+res.data[i].name+"</option>");
+					$("select[name='gmzc_a']").append("<option value='"+res.data[i].id+"'>"+res.data[i].name+"</option>");
+					}
+//					form.render();
+					$.ajax({
+						type : "GET",
+						url : "/shiwuzichan/YW_chaxun/yw_tongyong/",
+						data:{"action":"gysh","id":myid,"key":key},
+						dataType: "json",
+						success: function(res)
+						{
+							for(var i=0; i<res.data.length; i++){
+							$("select[name='gysh']").append("<option value='"+res.data[i].id+"'>"+res.data[i].name+"</option>");
+							$("select[name='gysh_a']").append("<option value='"+res.data[i].id+"'>"+res.data[i].name+"</option>");
+							}
+							form.render();
+						}
+					});
+				}
+            });
+			parent.document.getElementById("option").height=0;
+			parent.document.getElementById("option").height=document.body.scrollHeight;
+        });
+				
+		table.render({
+            elem: '#LAY_table_user'
+            ,url: '/shiwuzichan/YW_chaxun/yw_base/?action=hetong&id=' + myid + '&key=' + key
+            ,cols: [[
+                {field: 'number', title: 'ID', width:80, sort: true, fixed: 'left'}
+				,{field: 'name', title: '名称', width:100, sort: true}
+				,{field: 'bianhao', title: '编号', width:140} 
+				,{field: 'gmzc', title: '购买资产', width:160} 
+				,{field: 'gysh', title: '供应商', width:100}
+				,{field: 'shuliang', title: '数量', width:80}
+				,{field: 'gmriqi', title: '购买日期', width:160} 
+				,{field: 'fpbh', title: '发票编号', width:100}
+				,{field: 'bxnx', title: '保修年限', width:80}
+				,{field: 'gmjg', title: '购买总价', width:80}
+				,{field: 'beizhu', title: '备注', width: 300}
+				,{field:'right', title: '操作', width:100,toolbar:"#barDemo"}
+            ]]
+            ,id: 'testReload'
+            ,page: true
+            ,height: 475
+        });		
+				
+        var $ = layui.$, active = {
+            add: function()
+			{
+//				console.log(zhriqi.value);
+				if(names.value!='')
+				{
+					if(bianhao.value!='')
+					{
+						if(gmzc.value!='')
+						{            
+							if(gysh.value!='')
+							{
+								if(shuliang.value!='')
+								{
+									if(gmriqi.value!='')
+									{
+										if(fpbh.value!='')
+										{            
+											if(bxnx.value!='')
+											{
+												if(gmjg.value!='')
+												{            
+												$.ajax({
+													url: "/shiwuzichan/ZC_guanli/ZC_hetong/ZC_hetong/?beizhu=" + beizhu.value + "&name=" + names.value + "&bianhao=" + bianhao.value,
+													type: "POST",
+													data:{"gmzc":gmzc.value,"gysh":gysh.value,"shuliang":shuliang.value,"gmriqi":gmriqi.value,"fpbh":fpbh.value,"bxnx":bxnx.value,"gmjg":gmjg.value,"action":"add","id":myid,"key":key},
+													dataType: "json",
+													success: function(data){
+									//					console.log(data.error.status);
+														if(data.error.status == false){
+																layer.msg("添加成功", {icon: 6});
+															}
+															else
+															{
+																if(data.error.code == 21)
+																	layer.msg(data.error.source, {icon: 5});
+																else if(data.error.code == 20)
+																	layer.msg(data.error.source, {icon: 5});
+																else
+																	layer.msg("添加失败", {icon: 5});
+															}
+															table.reload('testReload', {
+															page: {
+															  curr: 1 //重新从第 1 页开始
+																}
+															});	
+														}
+													});
+												}
+												else
+												{
+													layer.msg("请填写“购买总价”！", {icon: 5});
+												}
+											}
+											else
+											{
+												layer.msg("请填写“保修年限”！", {icon: 5});
+											}
+										}
+										else
+										{
+											layer.msg("请填写“发票编号”！", {icon: 5});
+										}
+									}
+									else
+									{
+										layer.msg("请填写“购买日期”！", {icon: 5});
+									}
+								}
+								else
+								{
+									layer.msg("请填写“购买数量”！", {icon: 5});
+								}
+							}
+							else
+							{
+								layer.msg("请选择“供应商”！", {icon: 5});
+							}
+						}
+						else
+						{
+							layer.msg("请选择“购买资产”！", {icon: 5});
+						}
+					}
+					else
+					{
+						layer.msg("请填写“合同编号”！", {icon: 5});
+					}
+				}
+				else
+				{
+					layer.msg("请填写“合同名称”！", {icon: 5});
+				}
+            },
+            gai: function()
+			{
+//				console.log(zhriqi.value);
+				if(ht_num.value!='')
+				{
+					if(names_a.value!='')
+					{
+						if(bianhao_a.value!='')
+						{
+							if(gmzc_a.value!='')
+							{            
+								if(gysh_a.value!='')
+								{
+									if(shuliang_a.value!='')
+									{
+										if(gmriqi_a.value!='')
+										{
+											if(fpbh_a.value!='')
+											{            
+												if(bxnx_a.value!='')
+												{
+													if(gmjg_a.value!='')
+													{            
+													$.ajax({
+														url: "/shiwuzichan/ZC_guanli/ZC_hetong/ZC_hetong/?beizhu=" + beizhu_a.value + "&name=" + names_a.value + "&bianhao=" + bianhao_a.value,
+														type: "POST",
+														data:{"number":ht_num.value,"gmzc":gmzc_a.value,"gysh":gysh_a.value,"shuliang":shuliang_a.value,"gmriqi":gmriqi_a.value,"fpbh":fpbh_a.value,"bxnx":bxnx_a.value,"gmjg":gmjg_a.value,"action":"gai","id":myid,"key":key},
+														dataType: "json",
+														success: function(data){
+										//					console.log(data.error.status);
+															if(data.error.status == false){
+																	layer.msg("修改成功", {icon: 6});
+																}
+																else
+																{
+																	if(data.error.code == 21)
+																		layer.msg(data.error.source, {icon: 5});
+																	else if(data.error.code == 20)
+																		layer.msg(data.error.source, {icon: 5});
+																	else
+																		layer.msg("修改失败", {icon: 5});
+																}
+																table.reload('testReload', {
+																page: {
+																  curr: 1 //重新从第 1 页开始
+																	}
+																});	
+															}
+														});
+													}
+													else
+													{
+														layer.msg("请填写“购买总价”！", {icon: 5});
+													}
+												}
+												else
+												{
+													layer.msg("请填写“保修年限”！", {icon: 5});
+												}
+											}
+											else
+											{
+												layer.msg("请填写“发票编号”！", {icon: 5});
+											}
+										}
+										else
+										{
+											layer.msg("请填写“购买日期”！", {icon: 5});
+										}
+									}
+									else
+									{
+										layer.msg("请填写“购买数量”！", {icon: 5});
+									}
+								}
+								else
+								{
+									layer.msg("请选择“供应商”！", {icon: 5});
+								}
+							}
+							else
+							{
+								layer.msg("请选择“购买资产”！", {icon: 5});
+							}
+						}
+						else
+						{
+							layer.msg("请填写“合同编号”！", {icon: 5});
+						}
+					}
+					else
+					{
+						layer.msg("请填写“合同名称”！", {icon: 5});
+					}
+				}
+				else
+				{
+					layer.msg("请单击选择需要修改的合同！", {icon: 5});
+				}
+            }			
+        };
+		
+		
+		table.on('row(test)', function(obj){
+			var data = obj.data;
+//			console.log(data);
+			ht_num.value = data.number;	
+			names_a.value=data.name;
+			bianhao_a.value=data.bianhao;
+			shuliang_a.value=data.shuliang;
+			gmriqi_a.value=data.gmriqi;
+			fpbh_a.value=data.fpbh;
+			bxnx_a.value=data.bxnx;
+			gmjg_a.value=data.gmjg;
+			beizhu_a.value=data.beizhu;
+
+			//标注选中样式
+			obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+//			form.render();
+		});		
+		
+        //监听工具条
+        table.on('tool(test)', function(obj){
+			console.log(ht_num.value);
+            var data = obj.data;
+			if(obj.event === 'del')
+			{
+                layer.confirm('确定删除？', function(index)
+				{
+ //                   console.log(data);
+					$.ajax({
+					url: "/shiwuzichan/ZC_guanli/ZC_hetong/ZC_hetong/",
+					type: "POST",
+					data:{"number":ht_num.value,"action":"del","id":myid,"key":key},
+					dataType: "json",
+					success: function(data){
+//						console.log(data.error.status);
+							if(data.error.status == false)
+							{
+								layer.msg("删除成功", {icon: 6});
+							}
+							else
+							{
+								if(data.error.code == 21)
+									layer.msg(data.error.source, {icon: 5});
+								else if(data.error.code == 20)
+									layer.msg(data.error.source, {icon: 5});
+								else
+									layer.msg("删除失败", {icon: 5});
+							}
+							table.reload('testReload', {
+							page: {
+							  curr: 1 //重新从第 1 页开始
+								}
+							});	
+						}
+					});
+                });
+            }
+        });		
+		
+        
+		$('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+</body>
+</html>

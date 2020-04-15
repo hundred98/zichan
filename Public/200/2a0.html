@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="gb2312">
+    <title>实物资产管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/css/layui.css">
+
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+
+<body>
+<script src="../layui/layui.js"></script>
+<script src="../layui/res/js/cookie.js"></script>
+
+<h1>资产借调</h1>
+<!--form name="lc" class="layui-form col-lg-5" action="/shiwuzichan/YW_guanli/zc_ly/" method="post"> -->
+<div class="demoTable">
+  
+	<table border="0">
+		<tbody>
+			<tr>
+				<td><label class="layui-form-label">资产编号:</label></td>
+				<td><input class="layui-input" name="zc_luodi_num" id="zc_num" autocomplete="off" readonly="true" style="width:200px;height:30px;"></td>
+			</tr>
+			<tr>
+				<td><label class="layui-form-label">借用单位:</label></td>
+				<td><input class="layui-input" name="jddanwei" id="jddanwei" autocomplete="off" style="width:200px;height:30px;"></td>
+			</tr>
+			<tr>
+				<td><label class="layui-form-label">借用联系人:</label></td>
+				<td><input class="layui-input" name="jdren" id="jdren" autocomplete="off" style="width:200px;height:30px;"></td>
+			</tr>
+			<tr>
+				<td><label class="layui-form-label">借用人联系方式:</label></td>
+				<td><input class="layui-input" name="jdlxfs" id="jdlxfs" autocomplete="off" style="width:200px;height:30px;"></td>
+			</tr>
+			<tr>
+				<td><label class="layui-form-label">借调地址:</label></td>
+				<td><input class="layui-input" name="jddidian" id="jddidian" autocomplete="off" style="width:200px;height:30px;"></td>
+			</tr>
+			<tr>
+				<td><label class="layui-form-label">返回日期:</label></td>
+				<td><input type="text" class="layui-input" name="zhriqi" id="zhriqi" placeholder="yyyy-MM-dd" style="width:200px;height:30px;"></td>
+			</tr>
+			<tr>
+				<td><label class="layui-form-label">借调说明:</label></td>
+				<td><input class="layui-input" name="shuoming" id="zc_sm" autocomplete="off" style="width:200px;height:30px;"></td>
+			</tr>
+		</tbody>
+	</table>
+	<button  class="layui-btn layui-col-md-offset1" data-type="add"> 申请</button>
+
+	<hr class="layui-bg-green">
+	<h2>可借调资产：</h2>
+<!--	
+    <label class="layui-form-label">资产名称:</label>
+    <div class="layui-inline">
+        <input class="layui-input" name="keyword" id="demoReload" autocomplete="off">
+    </div>
+    <button class="layui-btn" data-type="reload">搜索</button>
+-->	
+</div>
+
+<table class="layui-hide" id="test" lay-filter="test"></table>
+<script type="text/html" id="toolbarDemo">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+  </div>
+</script>
+
+<div style="margin-bottom: 5px;">
+    <ins class="adsbygoogle" style="display:inline-block;width:700px;height:485px" data-ad-client="ca-pub-6111334333458862" data-ad-slot="3820120620"></ins>
+</div>
+
+<script>
+	//JavaScript代码区域
+	//config的设置是全局的
+	layui.config({
+	  base: '../layui/res/js/' //假设这是cookie.js所在的目录（本页面的相对路径）
+	}).extend({ //设定模块别名
+	  //cookie: 'cookie'   如果cookie.js是在根目录，也可以不用设定别名,因为我cookie.js的是在根目录，所以这句话其实也不用写也行。
+	});
+
+    layui.use(['jquery','laydate','cookie','layer','table','cookie','form'], function(){
+        var table = layui.table
+		,$= layui.jquery
+		,cookie= layui.cookie
+		,form=layui.form
+		,laydate = layui.laydate;
+		
+		var myid=$.cookie('username');
+		var key=$.cookie('key');
+		
+		laydate.render({
+			elem: '#zhriqi' //指定元素
+		});
+		
+		$(document).ready(function(){
+			parent.document.getElementById("option").height=0;
+			parent.document.getElementById("option").height=document.body.scrollHeight;
+		});
+		
+        //方法级渲染
+        table.render({
+            elem: '#test'
+            ,url: '/shiwuzichan/YW_chaxun/yw_chaxun/?action=jd-ke&id=' + myid + '&key=' + key
+            ,cols: [[
+                {field: 'number', title: 'ID', width:80, sort: true, fixed: 'left'}
+				,{field: 'name', title: '名称', width:240, sort: true}
+				,{field: 'xuhao', title: '产品序号', width:150} 
+				,{field: 'zerenren', title: '当前责任人', width:120, sort: true} 
+				,{field: 'didian', title: '存放地点', width:120, sort: true}
+				,{field: 'beizhu', title: '备注', width: 300}
+            ]]
+            ,id: 'testReload'
+            ,page: true
+            ,height: 475
+        });
+		
+		//监听行单击事件（单击事件为：rowDouble）
+		table.on('row(test)', function(obj){
+			var data = obj.data;
+//			console.log(data);
+			zc_num.value = data.number;		
+			//标注选中样式
+			obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+		});
+		
+        var $ = layui.$, active = {
+/*            
+			reload: function(){
+				table.reload('testReload', {
+				page: {
+				  curr: 1 //重新从第 1 页开始
+					}
+				});	
+            },
+*/
+            add: function()
+			{
+				if(zc_num.value!='')
+				{
+					if(jddanwei.value!='')
+					{
+						if(jdren.value!='')
+						{            
+							if(jdlxfs.value!='')
+							{
+								if(jddidian.value!='')
+								{
+									if(zhriqi.value!='')
+									{            
+									$.ajax({
+										url: "/shiwuzichan/YW_guanli/zc_jd/?shuoming=" + zc_sm.value + "&jddanwei=" + jddanwei.value+ "&jdren=" + jdren.value+ "&jdlxfs=" + jdlxfs.value+ "&jddidian=" + jddidian.value,
+										type: "POST",
+										data:{"zc_luodi_num":zc_num.value,"zhriqi":zhriqi.value,"action":"add","id":myid,"key":key},
+										dataType: "json",
+										success: function(data){
+						//					console.log(data);
+						//					console.log(data.error.status);
+											if(data.error.status == false){
+													layer.msg("申请成功", {icon: 6});
+												}
+												else
+												{
+													if(data.error.code == 21)
+														layer.msg(data.error.source, {icon: 5});
+													else if(data.error.code == 20)
+														layer.msg(data.error.source, {icon: 5});
+													else
+														layer.msg("申请失败", {icon: 5});
+														layer.msg("申请失败", {icon: 5});
+												}						
+												table.reload('testReload', {
+												page: {
+												  curr: 1 //重新从第 1 页开始
+													}
+												});	
+											}
+										});
+									}
+									else
+									{
+										layer.msg("请填写“返回日期”！", {icon: 5});
+									}
+								}
+								else
+								{
+									layer.msg("请填写“借调地址”！", {icon: 5});
+								}
+							}
+							else
+							{
+								layer.msg("请填写“借用人联系方式”！", {icon: 5});
+							}
+						}
+						else
+						{
+							layer.msg("请填写“借用联系人”！", {icon: 5});
+						}
+					}
+					else
+					{
+						layer.msg("请填写“借用单位”！", {icon: 5});
+					}
+				}
+				else
+				{
+					layer.msg("请点击选择“资产”！", {icon: 5});
+				} 
+			}
+        };
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+</body>
+</html>

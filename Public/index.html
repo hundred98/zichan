@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="gb2312">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>实物资产管理系统</title>
+  <link rel="stylesheet" href="./layui/css/layui.css">
+</head>
+<body>
+ 
+<!-- 你的HTML代码 -->
+
+<p align="center">&nbsp;</p>
+<p align="center">&nbsp;</p>
+<p align="center">&nbsp;</p>
+<p align="center">&nbsp;</p>
+<p align="center">&nbsp;</p>
+
+<div style="margin: 15px 0; text-align: center; background-color: #F2F2F2;">
+  <ins style="width:728px;height:120px"><font size="7" color="#009688"><strong>实物资产管理系统</strong></ins>
+</div>
+	  
+<!--	  <p align="center"><font size="7" color="#009688"><strong>实物资产管理系统</strong></font></p>   -->
+<hr class="layui-bg-blue">
+	  <p align="center">&nbsp;</p>
+<form name="lc" class="layui-form col-lg-5">
+  <div align="center">
+    <table border="0">
+      <tbody>
+        <tr>
+          <td><label class="layui-form-label" style="width:100px; font-size: 22px;">用户名：</label></td>
+          <td><input type="text" name="sname" id="sname" autocomplete="off" class="layui-input" style="width:200px;height:30px; font-size: 22px;"></td>
+        </tr>
+        <tr>
+          <td><label class="layui-form-label" style="width:100px; font-size: 22px;">密码：</label></td>
+          <td><input type="password" name="pswd" id="pswd" autocomplete="off" class="layui-input" style="width:200px;height:30px; font-size: 22px;"></td>	
+        </tr>
+      </tbody>
+  </table>
+  </div>
+</form> 
+
+<p align="center">&nbsp;</p>
+<div class="demoTable" align="center">
+	<button class="layui-btn layui-btn-lg layui-btn-radius layui-btn-normal" data-type="denglu" id="denglu" style="font-size: 25px;">登录</button>
+</div>	 
+
+<p align="center">&nbsp;</p>
+<p align="center">&nbsp;</p>
+<p align="center">&nbsp;</p>
+<p align="center">&nbsp;</p>
+
+<p align="center"><font size="4" color=#1E9FFF><strong>@深圳大湾物联科技有限公司</strong></font></p>
+<p align="center"><font size="4" color=#1E9FFF><strong>@深圳中航信息科技产业股份有限公司</strong></font></p>
+
+      
+<script src="./layui/layui.js"></script>
+<script src="./layui/res/js/cookie.js"></script>
+<script src="./layui/res/js/md5.js"></script>
+
+<script>
+	//JavaScript代码区域
+	//config的设置是全局的
+	layui.config({
+	  base: './layui/res/js/' //假设这是cookie.js所在的目录（本页面的相对路径）
+	}).extend({ //设定模块别名
+	  //cookie: 'cookie'   如果cookie.js是在根目录，也可以不用设定别名,因为我cookie.js的是在根目录，所以这句话其实也不用写也行。
+	  //md5:'md5'
+	});
+	
+	//使用拓展模块
+	layui.use(['jquery','cookie','layer','form'], function(){
+		var $= layui.jquery
+		,cookie= layui.cookie
+		,form= layui.form
+		,layer = layui.layer;
+
+//	var juese;
+//	var key;
+
+	var $ = layui.$, active = {
+		denglu: function(){
+			var username = document.getElementById("sname");
+			var pswd = document.getElementById("pswd");
+			$.cookie('username', username.value);
+//			console.log(my);
+			if(username.value!='')
+			{
+				if(pswd.value!='')
+				{
+				var pswdmd=hex_md5(pswd.value);
+				$.ajax({
+					url: "/shiwuzichan/denglu",
+					type: "POST",
+					data:{"action":'denglu',"id":username.value,"pswd":pswdmd},
+					dataType: "json",
+					success: function(data){
+//						console.log(data);
+						if(data.code == 0)
+						{
+							$.cookie('juese', data.data[0].name);
+							$.cookie('key', data.data[1].name);
+							$.cookie('mingz', data.data[2].name);
+//							juese = $.cookie('juese');
+//							key = $.cookie('key');
+							window.open("/shiwuzichan/main.html");
+							window.opener=null;
+							window.open('','_self');
+							window.close();
+						}
+						else
+						{
+							layer.msg(data.msg);
+						}
+					}
+				});	
+				}
+				else
+				{
+					layer.msg("请输入“密码”！", {icon: 5});
+				}
+			}
+			else
+			{
+				layer.msg("请填写“用户名”！", {icon: 5});
+			}			
+		}
+	};
+
+	$(document).keydown(function(e){
+		if(e.keyCode === 13){
+			$("#denglu").trigger("click");
+		}
+	});
+
+	$('.demoTable .layui-btn').on('click', function(){
+		var type = $(this).data('type');
+		active[type] ? active[type].call(this) : '';
+	});
+	
+});
+
+	//用$.cookie();就可以直接使用了。
+</script>
+</body>
+</html>

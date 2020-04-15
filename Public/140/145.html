@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="gb2312">
+    <title>实物资产管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/css/layui.css">
+
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+
+<body>
+<script src="../layui/layui.js"></script>
+<script src="../layui/res/js/cookie.js"></script>
+
+<h1>生产商管理</h1>
+<!--form name="lc" class="layui-form col-lg-5" action="/shiwuzichan/YW_guanli/zc_ly/" method="post"> -->
+<div class="demoTable layui-form">
+	<input type="hidden" name="sc_num" id="sc_num">
+	
+	<table class="layui-table" lay-size="sm" style="table-layout:fixed">
+		<colgroup>
+			<col width="40">
+			<col width="100">
+			<col width="10">
+			<col width="40">
+			<col width="100">
+		</colgroup>
+		<tbody>
+			<tr>
+				<td><label class="layui-form-label">公司名称:</label></td>
+				<td><input class="layui-input" name="names" id="names" style="width:180px;height:30px;"></td>
+				<td> </td>
+				<td><label class="layui-form-label">公司名称:</label></td>
+				<td><input class="layui-input" name="names_a" id="names_a" style="width:180px;height:30px;"></td>
+			</tr>
+			<tr>
+				<td><label class="layui-form-label">公司资质:</label></td>
+				<td><input class="layui-input" name="zizhi" id="zizhi" style="width:180px;height:30px;"></td>
+				<td> </td>
+				<td><label class="layui-form-label">公司资质:</label></td>
+				<td><input class="layui-input" name="zizhi_a" id="zizhi_a" style="width:180px;height:30px;"></td>
+			</tr>
+			<tr>
+				<td><label class="layui-form-label">公司地址:</label></td>
+				<td><input class="layui-input" name="dizhi" id="dizhi" style="width:180px;height:30px;"></td>
+				<td> </td>
+				<td><label class="layui-form-label">公司地址:</label></td>
+				<td><input class="layui-input" name="dizhi_a" id="dizhi_a" style="width:180px;height:30px;"></td>
+			</tr>
+			<tr>
+				<td><label class="layui-form-label">电话:</label></td>
+				<td><input class="layui-input" name="dianhua" id="dianhua" style="width:180px;height:30px;"></td>
+				<td> </td>
+				<td><label class="layui-form-label">电话:</label></td>
+				<td><input class="layui-input" name="dianhua_a" id="dianhua_a" style="width:180px;height:30px;"></td>
+			</tr>
+			<tr>
+				<td><label class="layui-form-label">网址:</label></td>
+				<td><input class="layui-input" name="wangzhi" id="wangzhi" style="width:180px;height:30px;"></td>
+				<td> </td>
+				<td><label class="layui-form-label">网址:</label></td>
+				<td><input class="layui-input" name="wangzhi_a" id="wangzhi_a" style="width:180px;height:30px;"></td>
+			</tr>
+			<tr>
+				<td><label class="layui-form-label">Email:</label></td>
+				<td><input class="layui-input" name="Email" id="Email" style="width:180px;height:30px;"></td>
+				<td> </td>
+				<td><label class="layui-form-label">Email:</label></td>
+				<td><input class="layui-input" name="Email_a" id="Email_a" style="width:180px;height:30px;"></td>
+			</tr>			<tr>
+				<td><label class="layui-form-label">传真:</label></td>
+				<td><input class="layui-input" name="chuanzhen" id="chuanzhen" style="width:180px;height:30px;"></td>
+				<td> </td>
+				<td><label class="layui-form-label">传真:</label></td>
+				<td><input class="layui-input" name="chuanzhen_a" id="chuanzhen_a" style="width:180px;height:30px;"></td>
+			</tr>
+			<tr>
+				<td><label class="layui-form-label">备注:</label></td>
+				<td><input class="layui-input" name="beizhu" id="beizhu" style="width:180px;height:30px;"></td>
+				<td> </td>
+				<td><label class="layui-form-label">备注:</label></td>
+				<td><input class="layui-input" name="beizhu_a" id="beizhu_a" style="width:180px;height:30px;"></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><button  class="layui-btn layui-col-md-offset1" data-type="add"> 添加</button></td>
+				<td> </td>
+				<td></td>
+				<td><button  class="layui-btn layui-col-md-offset1" data-type="gai"> 修改</button></td>
+			</tr>			
+		</tbody>
+	</table>
+</div>
+
+<table class="layui-hide" id="LAY_table_user" lay-filter="test"></table>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn-sm layui-btn-danger" lay-event="del">删除</a>
+</script>
+
+
+<div style="margin-bottom: 5px;">
+    <ins class="adsbygoogle" style="display:inline-block;width:700px;height:485px" data-ad-client="ca-pub-6111334333458862" data-ad-slot="3820120620"></ins>
+</div>
+
+<script>
+	//JavaScript代码区域
+	//config的设置是全局的
+	layui.config({
+	  base: '../layui/res/js/' //假设这是cookie.js所在的目录（本页面的相对路径）
+	}).extend({ //设定模块别名
+	  //cookie: 'cookie'   如果cookie.js是在根目录，也可以不用设定别名,因为我cookie.js的是在根目录，所以这句话其实也不用写也行。
+	});
+
+    layui.use(['jquery','cookie','table','layer','form'], function(){
+        var $= layui.jquery
+		,cookie= layui.cookie
+		,form=layui.form
+		,layer=layui.layer
+		,table = layui.table;
+		
+		var myid=$.cookie('username');
+		var key=$.cookie('key');
+		
+		$(document).ready(function(){
+			parent.document.getElementById("option").height=0;
+			parent.document.getElementById("option").height=document.body.scrollHeight;
+		});
+		
+		table.render({
+            elem: '#LAY_table_user'
+            ,url: '/shiwuzichan/YW_chaxun/yw_base/?action=shchsh&id=' + myid + '&key=' + key
+            ,cols: [[
+                {field: 'number', title: 'ID', width:80, sort: true, fixed: 'left'}
+				,{field: 'name', title: '公司名称', width:100, sort: true}
+				,{field: 'zizhi', title: '公司资质', width:80} 
+				,{field: 'dizhi', title: '公司地址', width:160} 
+				,{field: 'dianhua', title: '电话', width:100}
+				,{field: 'wangzhi', title: '网址', width:120}
+				,{field: 'Email', title: 'Email', width:120} 
+				,{field: 'chuanzhen', title: '传真', width:100}
+				,{field: 'beizhu', title: '备注', width:280}
+				,{field:'right', title: '操作', width:100,toolbar:"#barDemo"}
+            ]]
+            ,id: 'testReload'
+            ,page: true
+            ,height: 475
+        });		
+				
+        var $ = layui.$, active = {
+            add: function()
+			{
+//				console.log(zhriqi.value);
+				if(names.value!='')
+				{
+					if(zizhi.value!='')
+					{
+						if(dizhi.value!='')
+						{            
+							if(dianhua.value!='')
+							{
+								if(wangzhi.value!='')
+								{
+									if(Email.value!='')
+									{
+										if(chuanzhen.value!='')
+										{            
+										$.ajax({
+											url: "/shiwuzichan/ZC_guanli/ZC_shchsh/ZC_shchsh/?beizhu=" + beizhu.value + "&name=" + names.value + "&zizhi=" + zizhi.value + "&dizhi=" + dizhi.value,
+											type: "POST",
+											data:{"dianhua":dianhua.value,"wangzhi":wangzhi.value,"Email":Email.value,"chuanzhen":chuanzhen.value,"action":"add","id":myid,"key":key},
+											dataType: "json",
+											success: function(data){
+							//					console.log(data.error.status);
+												if(data.error.status == false){
+														layer.msg("添加成功", {icon: 6});
+													}
+													else
+													{
+														if(data.error.code == 21)
+															layer.msg(data.error.source, {icon: 5});
+														else if(data.error.code == 20)
+															layer.msg(data.error.source, {icon: 5});
+														else
+															layer.msg("添加失败", {icon: 5});
+													}
+													table.reload('testReload', {
+													page: {
+													  curr: 1 //重新从第 1 页开始
+														}
+													});	
+												}
+											});
+										}
+										else
+										{
+											layer.msg("请填写“传真”！", {icon: 5});
+										}
+									}
+									else
+									{
+										layer.msg("请填写“Email”！", {icon: 5});
+									}
+								}
+								else
+								{
+									layer.msg("请填写“网址”！", {icon: 5});
+								}
+							}
+							else
+							{
+								layer.msg("请填写“电话”！", {icon: 5});
+							}
+						}
+						else
+						{
+							layer.msg("请填写“公司地址”！", {icon: 5});
+						}
+					}
+					else
+					{
+						layer.msg("请填写“公司资质”！", {icon: 5});
+					}
+				}
+				else
+				{
+					layer.msg("请填写“公司名称”！", {icon: 5});
+				}
+            },
+            gai: function()
+			{
+//				console.log(zhriqi.value);
+				if(sc_num.value!='')
+				{
+					if(names_a.value!='')
+					{
+						if(zizhi_a.value!='')
+						{
+							if(dizhi_a.value!='')
+							{            
+								if(dianhua_a.value!='')
+								{
+									if(wangzhi_a.value!='')
+									{
+										if(Email_a.value!='')
+										{
+											if(chuanzhen_a.value!='')
+											{            
+											$.ajax({
+												url: "/shiwuzichan/ZC_guanli/ZC_shchsh/ZC_shchsh/?beizhu=" + beizhu_a.value + "&name=" + names_a.value + "&zizhi=" + zizhi_a.value + "&dizhi=" + dizhi_a.value,
+												type: "POST",
+												data:{"number":sc_num.value,"dianhua":dianhua_a.value,"wangzhi":wangzhi_a.value,"Email":Email_a.value,"chuanzhen":chuanzhen_a.value,"action":"gai","id":myid,"key":key},
+												dataType: "json",
+												success: function(data){
+								//					console.log(data.error.status);
+													table.reload('testReload', {
+														page: {
+														  curr: 1 //重新从第 1 页开始
+															}
+														});	
+														if(data.error.status == false){
+															layer.msg("修改成功", {icon: 6});
+														}
+														else
+														{
+															if(data.error.code == 21)
+																layer.msg(data.error.source, {icon: 5});
+															else if(data.error.code == 20)
+																layer.msg(data.error.source, {icon: 5});
+															else
+																layer.msg("修改失败", {icon: 5});
+														}
+													}
+												});
+											}
+											else
+											{
+												layer.msg("请填写“传真”！", {icon: 5});
+											}
+										}
+										else
+										{
+											layer.msg("请填写“Email”！", {icon: 5});
+										}
+									}
+									else
+									{
+										layer.msg("请填写“网址”！", {icon: 5});
+									}
+								}
+								else
+								{
+									layer.msg("请填写“电话”！", {icon: 5});
+								}
+							}
+							else
+							{
+								layer.msg("请填写“公司地址”！", {icon: 5});
+							}
+						}
+						else
+						{
+							layer.msg("请填写“公司资质”！", {icon: 5});
+						}
+					}
+					else
+					{
+						layer.msg("请填写“公司名称”！", {icon: 5});
+					}
+				}
+				else
+				{
+					layer.msg("请单击选择需要修改的合同！", {icon: 5});
+				}
+            }			
+        };
+		
+		
+		table.on('row(test)', function(obj){
+			var data = obj.data;
+//			console.log(data);
+			sc_num.value = data.number;	
+			names_a.value=data.name;
+			zizhi_a.value=data.zizhi;
+			dizhi_a.value=data.dizhi;
+			dianhua_a.value=data.dianhua;
+			wangzhi_a.value=data.wangzhi;
+			Email_a.value=data.Email;
+			chuanzhen_a.value=data.chuanzhen;
+			beizhu_a.value=data.beizhu;
+
+			//标注选中样式
+			obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+//			form.render();
+		});		
+		
+        //监听工具条
+        table.on('tool(test)', function(obj){
+			console.log(sc_num.value);
+            var data = obj.data;
+			if(obj.event === 'del')
+			{
+                layer.confirm('确定删除？', function(index)
+				{
+ //                   console.log(data);
+					$.ajax({
+					url: "/shiwuzichan/ZC_guanli/ZC_shchsh/ZC_shchsh/",
+					type: "POST",
+					data:{"number":sc_num.value,"action":"del","id":myid,"key":key},
+					dataType: "json",
+					success: function(data){
+							if(data.error.status == false)
+							{
+								layer.msg("删除成功", {icon: 6});
+							}
+							else
+							{
+								if(data.error.code == 21)
+									layer.msg(data.error.source, {icon: 5});
+								else if(data.error.code == 20)
+									layer.msg(data.error.source, {icon: 5});
+								else
+									layer.msg("删除失败", {icon: 5});
+							}
+							table.reload('testReload', {
+							page: {
+							  curr: 1 //重新从第 1 页开始
+								}
+							});	
+						}
+					});
+                });
+            }
+        });		
+		
+        
+		$('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="gb2312">
+    <title>实物资产管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/css/layui.css">
+
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+
+<body>
+<script src="../layui/layui.js"></script>
+<script src="../layui/res/js/cookie.js"></script>
+
+<h1>机构管理</h1>
+<!--form name="lc" class="layui-form col-lg-5" action="/shiwuzichan/YW_guanli/zc_ly/" method="post"> -->
+<div class="demoTable">
+
+<hr class="layui-bg-red">
+ 
+<div id="test1"></div>
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+	</fieldset>
+</div>
+
+
+<div style="margin-bottom: 5px;">
+    <ins class="adsbygoogle" style="display:inline-block;width:700px;height:485px" data-ad-client="ca-pub-6111334333458862" data-ad-slot="3820120620"></ins>
+</div>
+
+<script>
+	//JavaScript代码区域
+	//config的设置是全局的
+	layui.config({
+	  base: '../layui/res/js/' //假设这是cookie.js所在的目录（本页面的相对路径）
+	}).extend({ //设定模块别名
+	  //cookie: 'cookie'   如果cookie.js是在根目录，也可以不用设定别名,因为我cookie.js的是在根目录，所以这句话其实也不用写也行。
+	});
+
+    layui.use(['jquery','cookie','tree','layer','cookie','form'], function(){
+        var $= layui.jquery
+		,cookie= layui.cookie
+		,form=layui.form
+		,tree=layui.tree
+		,layer=layui.layer;
+		
+		var myid=$.cookie('username');
+		var key=$.cookie('key');
+		
+		function refreshtree()
+		{
+			$.ajax({
+                type : "GET",
+                url : "/shiwuzichan/YW_chaxun/yw_base/",
+                data:{"action":"jigou","id":myid,"key":key},
+				dataType: "json",
+                success: function(res)
+				{
+				tree.reload('demotree',{
+					data: res.data
+					});
+				form.render();	
+				}
+			});
+		}
+
+		$(document).ready(function(){
+            $.ajax({
+                type : "GET",
+                url : "/shiwuzichan/YW_chaxun/yw_base/",
+                data:{"action":"jigou","id":myid,"key":key},
+				dataType: "json",
+                success: function(res)
+                {
+//					console.log(res.data);
+					tree.render({
+						elem: '#test1' //默认是点击节点可进行收缩
+						,data: res.data
+						,edit: ['add', 'update', 'del'] //操作节点的图标
+						,operate: function(obj){
+							var type = obj.type; //得到操作类型：add、edit、del
+							var data = obj.data; //得到当前节点的数据
+							var elem = obj.elem; //得到当前节点元素
+							
+							//Ajax 操作
+							var id = data.id; //得到节点索引
+							if(type === 'add'){ //增加节点
+//								console.log(id);
+								if(id==0)
+								{
+									$.ajax({
+										type : "POST",
+										url : "/shiwuzichan/JG_guanli/JG_guanli/?name=" + "未命名",
+										data:{"action":"fenhang","caozuo":"add","id":myid,"key":key},
+										dataType: "json",
+										success: function(data)
+										{
+											if(data.error.status == false)
+											{
+												layer.msg("添加成功", {icon: 6});
+											}
+											else
+											{
+												if(data.error.code == 21)
+													layer.msg(data.error.source, {icon: 5});
+												else if(data.error.code == 20)
+													layer.msg(data.error.source, {icon: 5});
+												else
+													layer.msg("添加失败", {icon: 5});
+											}
+											refreshtree();
+										}
+									});									
+								}
+								else if(id<1000)
+								{
+									$.ajax({
+										type : "POST",
+										url : "/shiwuzichan/JG_guanli/JG_guanli/?name=" + "未命名",
+										data:{"action":"bumen","caozuo":"add","number":id,"id":myid,"key":key},
+										dataType: "json",
+										success: function(data)
+										{
+											if(data.error.status == false)
+											{
+												layer.msg("添加成功", {icon: 6});
+											}
+											else
+											{
+												if(data.error.code == 21)
+													layer.msg(data.error.source, {icon: 5});
+												else if(data.error.code == 20)
+													layer.msg(data.error.source, {icon: 5});
+												else
+													layer.msg("添加失败", {icon: 5});
+											}
+											refreshtree();
+										}
+									});										
+								}
+								else
+								{
+									layer.msg("不能添加下级类别", {icon: 5});
+									refreshtree();
+								}
+							} else if(type === 'update'){ //修改节点
+//								console.log(elem.find('.layui-tree-txt').html()); //得到修改后的内容
+								var actor;
+								if(id<=1000)
+								{
+									actor="fenhang";
+								}
+								else
+								{
+									actor="bumen";
+								}
+								$.ajax({
+									type : "POST",
+									url : "/shiwuzichan/JG_guanli/JG_guanli/?name=" + elem.find('.layui-tree-txt').html(),
+									data:{"action":actor,"caozuo":"gai","number":id,"id":myid,"key":key},
+									dataType: "json",
+									success: function(data)
+									{
+										if(data.error.status == false)
+										{
+											layer.msg("更改成功", {icon: 6});
+//											refreshtree();
+										}
+										else
+										{
+											if(data.error.code == 21)
+												layer.msg(data.error.source, {icon: 5});
+											else if(data.error.code == 20)
+												layer.msg(data.error.source, {icon: 5});
+											else										
+												layer.msg("更改失败", {icon: 5});
+										}
+										refreshtree();
+									}
+								});															
+							}
+							else if(type === 'del'){ //删除节点
+//								console.log(id);
+								var actor;
+								if(id<=1000)
+								{
+									actor="fenhang";
+								}
+								else
+								{
+									actor="bumen";
+								}
+								$.ajax({
+									type : "POST",
+									url : "/shiwuzichan/JG_guanli/JG_guanli/",
+									data:{"action":actor,"caozuo":"del","number":id,"id":myid,"key":key},
+									dataType: "json",
+									success: function(data)
+									{
+										if(data.error.status == false)
+										{
+											layer.msg("删除成功", {icon: 6});
+//											refreshtree();
+										}
+										else
+										{
+											if(data.error.code == 21)
+												layer.msg(data.error.source, {icon: 5});
+											else if(data.error.code == 20)
+												layer.msg(data.error.source, {icon: 5});
+											else										
+												layer.msg("删除失败", {icon: 5});
+										}
+										refreshtree();
+									}
+								});	
+							};
+						}
+						,id: 'demotree'
+					});	
+				}
+            });		
+			parent.document.getElementById("option").height=0;
+			parent.document.getElementById("option").height=document.body.scrollHeight;
+        });
+		
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+</body>
+</html>

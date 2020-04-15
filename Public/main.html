@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="gb2312">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>实物资产管理系统</title>
+    <link rel="stylesheet" href="./layui/css/layui.css">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header layui-bg-green">
+        <div class="layui-logo layui-bg-green">实物资产管理系统</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+<!--        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="">控制台</a></li>
+            <li class="layui-nav-item"><a href="">商品管理</a></li>
+            <li class="layui-nav-item"><a href="">用户</a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">其它系统</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">邮件管理</a></dd>
+                    <dd><a href="">消息管理</a></dd>
+                    <dd><a href="">授权管理</a></dd>
+                </dl>
+            </li>
+        </ul>
+-->
+        <ul class="layui-nav layui-layout-right">
+			<li class="layui-nav-item"><label class="layui-form-label" style="width:150px;font-size:15px;" id="nihao">您好：</label></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="./rentou.jpg" class="layui-nav-img">
+                </a>
+
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:void(0)" onclick="submitFun('./ggmm.html','option')" >修改密码</a></dd>
+<!--                    <dd><a href="">安全设置</a></dd>   -->
+                </dl>
+
+            </li>
+            <li class="layui-nav-item"><a href="javascript:void(0)" onclick="submitFun('./index.html','close')">注销</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll layui-bg-green">
+            <!--  左侧导航区域（可配合layui已有的垂直导航）  -->
+            <ul class="layui-nav layui-bg-cyan layui-nav-tree" lay-filter="test">
+				<li class="layui-nav-item">
+					<a class="" href="javascript:;">系统管理</a>
+					<dl class="layui-nav-child">
+						<div id="a1">
+							<dd><a href="javascript:void(0)" onclick="submitFun('./110/index.html','option')" >机构管理</a></dd>
+						</div>
+						<div id="a2">
+							<dd><a href="javascript:void(0)" onclick="submitFun('./120/index.html','option')" >权限管理</a></dd>
+						</div>
+						<div id="a3">
+							<dd><a href="javascript:void(0)" onclick="submitFun('./130/index.html','option')" >用户管理</a></dd>
+						</div>
+						<div id="a4">
+							<dd><a href="javascript:void(0)" onclick="submitFun('./100/index.html','option')" >管理日志</a></dd>
+						</div>
+
+						<div id="a5">
+							<a href="javascript:;">资产管理</a>
+							<dl class="layui-nav-child">
+								<dd><a href="javascript:void(0)" onclick="submitFun('./140/141.html','option')" >  资产基本信息管理</a></dd>
+								<dd><a href="javascript:void(0)" onclick="submitFun('./140/142.html','option')" >  资产购入信息管理</a></dd>
+								<dd><a href="javascript:void(0)" onclick="submitFun('./140/143.html','option')" >  合同信息管理</a></dd>
+								<dd><a href="javascript:void(0)" onclick="submitFun('./140/144.html','option')" >  资产类别管理</a></dd>
+								<dd><a href="javascript:void(0)" onclick="submitFun('./140/145.html','option')" >  生产商管理</a></dd>
+								<dd><a href="javascript:void(0)" onclick="submitFun('./140/146.html','option')" >  供应商管理</a></dd>
+								<dd><a href="javascript:void(0)" onclick="submitFun('./140/147.html','option')" >  品牌型号管理</a></dd>
+								<dd><a href="javascript:void(0)" onclick="submitFun('./140/148.html','option')" >  存放地点管理</a></dd>
+								<dd><a href="javascript:void(0)" onclick="submitFun('./140/149.html','option')" >  资产状态管理</a></dd>
+								<dd><a href="javascript:void(0)" onclick="submitFun('./140/14a.html','option')" >  电子标签管理</a></dd>
+								<dd><a href="javascript:void(0)" onclick="submitFun('./140/14b.html','option')" >  盘点管理</a></dd>
+							</dl>
+						</div>
+					</dl>
+				</li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">业务流程</a>
+                    <dl class="layui-nav-child">
+						<div id="b1"> 
+							<dd><a href="javascript:void(0)" onclick="submitFun('./200/220.html','option')" >资产验收</a></dd>
+						</div>
+						<div id="b2"> 
+							<dd><a href="javascript:void(0)" onclick="submitFun('./200/230.html','option')" >资产入库</a></dd>
+						</div>	
+						<div id="b3"> 
+							<dd><a href="javascript:void(0)" onclick="submitFun('./200/240.html','option')" >资产领用</a></dd>
+							<dd><a href="javascript:void(0)" onclick="submitFun('./200/250.html','option')" >资产退库</a></dd>
+							<dd><a href="javascript:void(0)" onclick="submitFun('./200/260.html','option')" >资产借用</a></dd>
+							<dd><a href="javascript:void(0)" onclick="submitFun('./200/270.html','option')" >资产归还</a></dd>
+							<dd><a href="javascript:void(0)" onclick="submitFun('./200/280.html','option')" >资产转移</a></dd>
+						</div>
+						<div id="b4"> 
+							<dd><a href="javascript:void(0)" onclick="submitFun('./200/290.html','option')" >资产调拨</a></dd>
+						</div>
+						<div id="b5"> 
+							<dd><a href="javascript:void(0)" onclick="submitFun('./200/2a0.html','option')" >资产借调</a></dd>
+						</div>
+						<div id="b6"> 
+							<dd><a href="javascript:void(0)" onclick="submitFun('./200/2b0.html','option')" >资产托管</a></dd>
+						</div>
+						<div id="b7"> 
+							<dd><a href="javascript:void(0)" onclick="submitFun('./200/2c0.html','option')" >资产终止托管</a></dd>
+						</div>
+						<div id="b8"> 
+							<dd><a href="javascript:void(0)" onclick="submitFun('./200/2d0.html','option')" >资产退出</a></dd>
+						</div>
+						<div id="b9"> 
+							<dd><a href="javascript:void(0)" onclick="submitFun('./200/2e0.html','option')" >资产处置</a></dd>
+						</div>
+                    </dl>
+                </li>
+				<li class="layui-nav-item">
+					<a href="javascript:;">系统信息</a>
+					<dl class="layui-nav-child">
+						<dd><a href="javascript:void(0)" onclick="submitFun('./310/index.html','option')" >待办/已办事项</a></dd>
+						<dd><a href="javascript:void(0)" onclick="submitFun('./320/index.html','option')" >系统日志</a></dd>
+					</dl>
+				</li>
+			  
+				<li class="layui-nav-item">
+					<a href="javascript:;">系统查询</a>
+					<dl class="layui-nav-child">
+						<div id="c1"> 
+							<dd><a href="javascript:void(0)" onclick="submitFun('./410/index.html','option')" >资产综合查询</a></dd>
+<!--							<dd><a href="javascript:void(0)" onclick="submitFun('./440/index.html','option')" >供应商查询</a></dd>		-->
+<!--							<dd><a href="javascript:void(0)" onclick="submitFun('./450/index.html','option')" >人事异动查询</a></dd>	-->
+						</div>
+						<dd><a href="javascript:void(0)" onclick="submitFun('./420/index.html','option')" >个人资产查询</a></dd>
+						<dd><a href="javascript:void(0)" onclick="submitFun('./430/index.html','option')" >流程到期提醒</a></dd>
+					</dl>
+				</li>
+				
+				<div id="d1"> 
+					<li class="layui-nav-item">
+						<a href="javascript:;">统计报表</a>
+						<dl class="layui-nav-child">
+							<dd><a href="javascript:void(0)" onclick="submitFun('./510/index.html','option')" >资产统计表</a></dd>
+						</dl>
+					</li>
+				</div>
+				<li class="layui-nav-item">
+					<a href="javascript:;">测试功能</a>
+					<dl class="layui-nav-child">
+						<dd><a href="javascript:void(0)" onclick="submitFun('./001/5.html','option')" >三维展示</a></dd>
+<!--						
+						<dd><a href="javascript:void(0)" onclick="submitFun('./001/2/2.html','option')" >动画测试A</a></dd>
+						<dd><a href="javascript:void(0)" onclick="submitFun('./001/3/3.html','option')" >动画测试B</a></dd>
+						<dd><a href="javascript:void(0)" onclick="submitFun('./001/4/4.html','option')" >动画测试C</a></dd>
+						<dd><a href="javascript:void(0)" onclick="submitFun('./001/5/5.html','option')" >动画测试D</a></dd>
+						<dd><a href="javascript:void(0)" onclick="submitFun('./001/6/6.html','option')" >动画测试E</a></dd>
+						<dd><a href="javascript:void(0)" onclick="submitFun('./001/7/7.html','option')" >动画测试F</a></dd>
+						<dd><a href="javascript:void(0)" onclick="submitFun('./001/index.html','option')" >调用摄像头</a></dd>
+-->
+					</dl>
+				</li>				
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+		<div style="padding: 15px;height:100%">
+			<iframe id="option" name="option" src="./UVList.html" style="overflow: visible" scrolling="no" frameborder="no" width="100%" height="100%"></iframe>
+		</div>
+
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        @ 深圳中航信息科技产业股份有限公司
+    </div>
+</div>
+<script src="./layui/layui.all.js"></script>
+<script src="./layui/res/js/cookie.js"></script>
+
+<script>
+	function submitFun(act,nam){
+//		console.log(nam);
+		if(nam == 'close')
+		{
+//			console.log('aaa');
+			window.open(act);
+			window.opener=null;
+			window.open('','_self');
+			window.close();
+		}
+		else
+		{
+			window.open(act,nam);
+		}
+	}
+</script>
+
+<script>
+
+	//JavaScript代码区域
+	//config的设置是全局的
+	layui.config({
+	  base: './layui/res/js/' //假设这是cookie.js所在的目录（本页面的相对路径）
+	}).extend({ //设定模块别名
+	  //cookie: 'cookie'  如果cookie.js是在根目录，也可以不用设定别名,因为我cookie.js的是在根目录，所以这句话其实也不用写也行。 
+	});
+
+window.closeThisWindow = function(){
+ window.close(); // 或者 this.close();
+};
+
+
+//注意：导航 依赖 element 模块，否则无法进行功能性操作
+layui.use(['jquery','cookie','layer','cookie','element'], function(){
+  var element = layui.element
+				,table = layui.table
+				,$= layui.jquery
+				,cookie= layui.cookie
+				,layer=layui.layer;
+				
+	var myid=$.cookie('username');	
+	var juese=$.cookie('juese');
+	var key=$.cookie('key');
+	var mingz=$.cookie('mingz');
+	
+	var label=document.getElementById("nihao");
+	label.innerText="您好:" + mingz;
+	
+	$(document).ready(function(){
+		$.ajax({
+			type : "GET",
+			url : "/shiwuzichan/YW_chaxun/yw_base/",
+			data:{"action":"quanxian_gr","juese":juese,"limit":10,"page":1,"id":myid,"key":key},
+			dataType: "json",
+			success: function(res)
+			{
+				if(res.data[0].jigou == "0")
+					$("#a1")[0].style.display = 'none';
+				if(res.data[0].quanx == "0")
+					$("#a2")[0].style.display = 'none';
+				if(res.data[0].yongh == "0")
+					$("#a3")[0].style.display = 'none';
+				if(res.data[0].rizhi == "0")
+					$("#a4")[0].style.display = 'none';
+				if(res.data[0].zc_guanli == "0")
+					$("#a5")[0].style.display = 'none';
+				if(res.data[0].zc_ys == "0")
+					$("#b1")[0].style.display = 'none';
+				if(res.data[0].zc_rk == "0")
+					$("#b2")[0].style.display = 'none';
+				if(res.data[0].zc_ty == "0")
+					$("#b3")[0].style.display = 'none';
+				if(res.data[0].zc_db == "0")
+					$("#b4")[0].style.display = 'none';
+				if(res.data[0].zc_jd == "0")
+					$("#b5")[0].style.display = 'none';
+				if(res.data[0].zc_tg == "0")
+					$("#b6")[0].style.display = 'none';
+				if(res.data[0].zc_zt == "0")
+					$("#b7")[0].style.display = 'none';
+				if(res.data[0].zc_tc == "0")
+					$("#b8")[0].style.display = 'none';
+				if(res.data[0].zc_cz == "0")
+					$("#b9")[0].style.display = 'none';
+				if(res.data[0].chaxun == "0")
+					$("#c1")[0].style.display = 'none';
+				if(res.data[0].tongji == "0")
+					$("#d1")[0].style.display = 'none';
+			}
+		});
+	});	
+  //...
+});
+</script>
+</body>
+</html>

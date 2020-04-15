@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="gb2312">
+    <title>实物资产管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/css/layui.css">
+
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+
+<body>
+<script src="../layui/layui.js"></script>
+<script src="../layui/res/js/cookie.js"></script>
+<script src="../layui/res/js/md5.js"></script>
+
+<h1>权限管理</h1>
+<hr class="layui-bg-red">
+
+<table class="layui-hide" id="LAY_table_user" lay-filter="test"></table>
+
+<div style="margin-bottom: 5px;">
+    <ins class="adsbygoogle" style="display:inline-block;width:700px;height:485px" data-ad-client="ca-pub-6111334333458862" data-ad-slot="3820120620"></ins>
+</div>
+
+<script type="text/html" id="switchTpl">
+	<input type="checkbox" name="jigou" value="{{d.number}}" lay-skin="switch" lay-text="开启|禁止" lay-filter="aDemo" {{d.jigou=='1'?'checked':''}}>
+</script>
+<script type="text/html" id="switchTp2">
+	<input type="checkbox" name="quanx" value="{{d.number}}" lay-skin="switch" lay-text="开启|禁止" lay-filter="bDemo" {{d.quanx=='1'?'checked':''}}>
+</script>
+<script type="text/html" id="switchTp3">
+	<input type="checkbox" name="yongh" value="{{d.number}}" lay-skin="switch" lay-text="开启|禁止" lay-filter="cDemo" {{d.yongh=='1'?'checked':''}}>
+</script>
+<script type="text/html" id="switchTp4">
+	<input type="checkbox" name="rizhi" value="{{d.number}}" lay-skin="switch" lay-text="开启|禁止" lay-filter="dDemo" {{d.rizhi=='1'?'checked':''}}>
+</script>
+<script type="text/html" id="switchTp5">
+	<input type="checkbox" name="zc_ys" value="{{d.number}}" lay-skin="switch" lay-text="开启|禁止" lay-filter="eDemo" {{d.zc_ys=='1'?'checked':''}}>
+</script>
+<script type="text/html" id="switchTp6">
+	<input type="checkbox" name="zc_rk" value="{{d.number}}" lay-skin="switch" lay-text="开启|禁止" lay-filter="fDemo" {{d.zc_rk=='1'?'checked':''}}>
+</script>
+<script type="text/html" id="switchTp7">
+	<input type="checkbox" name="zc_ty" value="{{d.number}}" lay-skin="switch" lay-text="开启|禁止" lay-filter="gDemo" {{d.zc_ty=='1'?'checked':''}}>
+</script>
+<script type="text/html" id="switchTp8">
+	<input type="checkbox" name="zc_db" value="{{d.number}}" lay-skin="switch" lay-text="开启|禁止" lay-filter="hDemo" {{d.zc_db=='1'?'checked':''}}>
+</script>
+<script type="text/html" id="switchTp9">
+	<input type="checkbox" name="zc_jd" value="{{d.number}}" lay-skin="switch" lay-text="开启|禁止" lay-filter="iDemo" {{d.zc_jd=='1'?'checked':''}}>
+</script>
+<script type="text/html" id="switchTpa">
+	<input type="checkbox" name="zc_tg" value="{{d.number}}" lay-skin="switch" lay-text="开启|禁止" lay-filter="jDemo" {{d.zc_tg=='1'?'checked':''}}>
+</script>
+<script type="text/html" id="switchTpb">
+	<input type="checkbox" name="zc_zt" value="{{d.number}}" lay-skin="switch" lay-text="开启|禁止" lay-filter="kDemo" {{d.zc_zt=='1'?'checked':''}}>
+</script>
+<script type="text/html" id="switchTpc">
+	<input type="checkbox" name="zc_tc" value="{{d.number}}" lay-skin="switch" lay-text="开启|禁止" lay-filter="lDemo" {{d.zc_tc=='1'?'checked':''}}>
+</script>
+<script type="text/html" id="switchTpd">
+	<input type="checkbox" name="zc_cz" value="{{d.number}}" lay-skin="switch" lay-text="开启|禁止" lay-filter="mDemo" {{d.zc_cz=='1'?'checked':''}}>
+</script>
+<script type="text/html" id="switchTpe">
+	<input type="checkbox" name="chaxun" value="{{d.number}}" lay-skin="switch" lay-text="开启|禁止" lay-filter="nDemo" {{d.chaxun=='1'?'checked':''}}>
+</script>
+<script type="text/html" id="switchTpf">
+	<input type="checkbox" name="tongji" value="{{d.number}}" lay-skin="switch" lay-text="开启|禁止" lay-filter="oDemo" {{d.tongji=='1'?'checked':''}}>
+</script>
+<script type="text/html" id="switchTpg">
+	<input type="checkbox" name="zc_guanli" value="{{d.number}}" lay-skin="switch" lay-text="开启|禁止" lay-filter="pDemo" {{d.zc_guanli=='1'?'checked':''}}>
+</script>
+
+<script>
+	//JavaScript代码区域
+	//config的设置是全局的
+	layui.config({
+	  base: '../layui/res/js/' //假设这是cookie.js所在的目录（本页面的相对路径）
+	}).extend({ //设定模块别名
+	  //cookie: 'cookie'   如果cookie.js是在根目录，也可以不用设定别名,因为我cookie.js的是在根目录，所以这句话其实也不用写也行。
+	});
+	
+    layui.use(['jquery','cookie','table','layer','form'], function(){
+        var $= layui.jquery
+		,cookie= layui.cookie
+		,form=layui.form
+		,layer=layui.layer
+		,table = layui.table;
+		
+		var myid=$.cookie('username');	
+		var key=$.cookie('key');
+		
+		$(document).ready(function(){
+			parent.document.getElementById("option").height=0;
+			parent.document.getElementById("option").height=document.body.scrollHeight;
+		});		
+		
+		table.render({
+            elem: '#LAY_table_user'
+            ,url: '/shiwuzichan/YW_chaxun/yw_base/?action=quanxian&id=' + myid + '&key=' + key
+            ,cols: [[
+                {field: 'number', title: 'ID', width:60, sort: true, fixed: 'left'}
+				,{field: 'name', title: '名称', width:100, sort: true}
+				,{field: 'jigou', title: '机构管理', width:90, templet: '#switchTpl', unresize: true} 
+				,{field: 'quanx', title: '权限管理', width:90, templet: '#switchTp2', unresize: true} 
+				,{field: 'yongh', title: '用户管理', width:90, templet: '#switchTp3', unresize: true} 
+				,{field: 'rizhi', title: '管理日志', width:90, templet: '#switchTp4', unresize: true} 
+				,{field: 'zc_ys', title: '验收流程', width:90, templet: '#switchTp5', unresize: true}
+				,{field: 'zc_rk', title: '入库流程', width:90, templet: '#switchTp6', unresize: true}
+				,{field: 'zc_ty', title: '通用流程', width:90, templet: '#switchTp7', unresize: true}
+				,{field: 'zc_db', title: '调拨流程', width:90, templet: '#switchTp8', unresize: true}
+				,{field: 'zc_jd', title: '借调流程', width:90, templet: '#switchTp9', unresize: true}
+				,{field: 'zc_tg', title: '托管流程', width:90, templet: '#switchTpa', unresize: true}
+				,{field: 'zc_zt', title: '终止托管流程', width:90, templet: '#switchTpb', unresize: true}
+				,{field: 'zc_tc', title: '退出流程', width:90, templet: '#switchTpc', unresize: true}
+				,{field: 'zc_cz', title: '处置流程', width:90, templet: '#switchTpd', unresize: true}
+				,{field: 'chaxun', title: '综合查询', width:90, templet: '#switchTpe', unresize: true}
+				,{field: 'tongji', title: '资产统计', width:90, templet: '#switchTpf', unresize: true}
+				,{field: 'zc_guanli', title: '资产管理', width:90, templet: '#switchTpg', unresize: true}
+            ]]
+            ,id: 'testReload'
+            ,page: true
+            ,height: 475
+        });	
+		
+		function setqx(juese,quanx,values)
+		{
+			$.ajax({
+				type : "POST",
+				url : "/shiwuzichan/QX_guanli/QX_guanli/",
+				data:{"action":"gai","juese":juese,"quanx":quanx,"values":values,"id":myid,"key":key},
+				dataType: "json",
+				success: function(data)
+				{
+					table.reload('testReload', {
+						page: {
+						  curr: 1 //重新从第 1 页开始
+						}
+					});	
+					if(data.error.status == false){
+							layer.msg("更改成功", {icon: 6});
+					}
+					else
+					{
+						if(data.error.code == 21)
+							layer.msg(data.error.source, {icon: 5});
+						else if(data.error.code == 20)
+							layer.msg(data.error.source, {icon: 5});
+						else												
+							layer.msg("更改失败", {icon: 5});
+					}
+				}
+			});
+		}
+		
+		//监听操作
+		var vals;
+		form.on('switch(aDemo)', function(obj){
+			if(obj.elem.checked == true)
+				vals = '1';
+			else
+				vals = '0';
+			setqx(this.value,this.name,vals);
+//			layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
+		});		
+		form.on('switch(bDemo)', function(obj){
+			if(obj.elem.checked == true)
+				vals = '1';
+			else
+				vals = '0';
+			setqx(this.value,this.name,vals);
+		});		
+		form.on('switch(cDemo)', function(obj){
+			if(obj.elem.checked == true)
+				vals = '1';
+			else
+				vals = '0';
+			setqx(this.value,this.name,vals);
+		});		
+		form.on('switch(dDemo)', function(obj){
+			if(obj.elem.checked == true)
+				vals = '1';
+			else
+				vals = '0';
+			setqx(this.value,this.name,vals);
+		});		
+		form.on('switch(eDemo)', function(obj){
+			if(obj.elem.checked == true)
+				vals = '1';
+			else
+				vals = '0';
+			setqx(this.value,this.name,vals);
+		});		
+		form.on('switch(fDemo)', function(obj){
+			if(obj.elem.checked == true)
+				vals = '1';
+			else
+				vals = '0';
+			setqx(this.value,this.name,vals);
+		});		
+		form.on('switch(gDemo)', function(obj){
+			if(obj.elem.checked == true)
+				vals = '1';
+			else
+				vals = '0';
+			setqx(this.value,this.name,vals);
+		});		
+		form.on('switch(hDemo)', function(obj){
+			if(obj.elem.checked == true)
+				vals = '1';
+			else
+				vals = '0';
+			setqx(this.value,this.name,vals);
+		});		
+		form.on('switch(iDemo)', function(obj){
+			if(obj.elem.checked == true)
+				vals = '1';
+			else
+				vals = '0';
+			setqx(this.value,this.name,vals);
+		});		
+		form.on('switch(jDemo)', function(obj){
+			if(obj.elem.checked == true)
+				vals = '1';
+			else
+				vals = '0';
+			setqx(this.value,this.name,vals);
+		});		
+		form.on('switch(kDemo)', function(obj){
+			if(obj.elem.checked == true)
+				vals = '1';
+			else
+				vals = '0';
+			setqx(this.value,this.name,vals);
+		});		
+		form.on('switch(lDemo)', function(obj){
+			if(obj.elem.checked == true)
+				vals = '1';
+			else
+				vals = '0';
+			setqx(this.value,this.name,vals);
+		});		
+		form.on('switch(mDemo)', function(obj){
+			if(obj.elem.checked == true)
+				vals = '1';
+			else
+				vals = '0';
+			setqx(this.value,this.name,vals);
+		});		
+		form.on('switch(nDemo)', function(obj){
+			if(obj.elem.checked == true)
+				vals = '1';
+			else
+				vals = '0';
+			setqx(this.value,this.name,vals);
+		});		
+		form.on('switch(oDemo)', function(obj){
+			if(obj.elem.checked == true)
+				vals = '1';
+			else
+				vals = '0';
+			setqx(this.value,this.name,vals);
+		});		
+		form.on('switch(pDemo)', function(obj){
+			if(obj.elem.checked == true)
+				vals = '1';
+			else
+				vals = '0';
+			setqx(this.value,this.name,vals);
+		});	
+	});	
+</script>
+</body>
+</html>
